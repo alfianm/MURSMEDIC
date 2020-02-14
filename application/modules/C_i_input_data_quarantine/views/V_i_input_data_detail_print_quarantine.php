@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 //-----------------------------------------------------------------------------------------------//
 $SESSION_ID = $this->session->userdata("session_mursmedic_id");
 $SESSION_NAME = $this->session->userdata("session_mursmedic_name");
@@ -10,17 +10,17 @@ $SESSION_GRANT = $this->session->userdata("session_mursmedic_grant");
 $si_id = trim($this->input->post('si_id'));
 //-----------------------------------------------------------------------------------------------//
 $get_data_all_product_inbound_single = $this->M_library_database->DB_GET_DATA_ALL_PRODUCT_INBOUND_SINGLE($si_id);
-if(empty($get_data_all_product_inbound_single)||$get_data_all_product_inbound_single==""){
+if (empty($get_data_all_product_inbound_single) || $get_data_all_product_inbound_single == "") {
 	echo '
 		<script>
 			alert("UNKNOWN COMMAND");
-			window.location.href = "'.site_url('i_input_data').'";
+			window.location.href = "' . site_url('i_input_data') . '";
 		</script>
 	';
 	exit();
 }
 //-----------------------------------------------------------------------------------------------//
-foreach($get_data_all_product_inbound_single as $data_row_all_product_inbound_single){
+foreach ($get_data_all_product_inbound_single as $data_row_all_product_inbound_single) {
 	$PTID_ID = $data_row_all_product_inbound_single->PTID_ID;
 	$PTID_DATE = $data_row_all_product_inbound_single->PTID_DATE;
 	$PTID_TGL_TERIMA = $data_row_all_product_inbound_single->PTID_TGL_TERIMA;
@@ -64,7 +64,7 @@ foreach($get_data_all_product_inbound_single as $data_row_all_product_inbound_si
 	<title><?php echo $this->M_library_module->WEB_TITLE; ?></title>
 	<meta name="description" content="RL" />
 	<meta name="author" content="RL" />
-	<link rel="icon" href="<?php echo base_url('template/rion/'.$this->M_library_module->WEB_ICON); ?>" />
+	<link rel="icon" href="<?php echo base_url('template/rion/' . $this->M_library_module->WEB_ICON); ?>" />
 
 	<!-- CSS / JAVA SCRIPT / BOOTSTRAP / ETC -->
 	<!-- bootstrap & fontawesome -->
@@ -380,6 +380,20 @@ foreach($get_data_all_product_inbound_single as $data_row_all_product_inbound_si
 									</a>
 									<b class="arrow"></b>
 								</li>
+								<li class="">
+									<a href="<?php echo site_url('q_sample'); ?>">
+									<i class="menu-icon fa fa-book"></i>
+									Sample
+									</a>
+									<b class="arrow"></b>
+								</li>
+								<li class="">
+									<a href="<?php echo site_url('q_return'); ?>">
+									<i class="menu-icon fa fa-book"></i>
+									Return
+									</a>
+									<b class="arrow"></b>
+								</li>
 							</ul>
 						</li>
 					</ul>
@@ -516,7 +530,7 @@ foreach($get_data_all_product_inbound_single as $data_row_all_product_inbound_si
 										<div class="col-xs-12 col-sm-4">
 											Tgl Terima : <?php echo $PTID_TGL_TERIMA; ?>
 											<br />
-											Supplier : <?php echo "(".$SR_ID.")"." ".$SR_NAME; ?>
+											Supplier : <?php echo "(" . $SR_ID . ")" . " " . $SR_NAME; ?>
 											<br />
 											PO No : <?php echo $PTID_PO_NO; ?>
 											<br />
@@ -527,7 +541,7 @@ foreach($get_data_all_product_inbound_single as $data_row_all_product_inbound_si
 										<div class="col-xs-12 col-sm-4">
 											Invoice No : <?php echo $PTID_INVOICE_NO; ?>
 											<br />
-											Forwarder : <?php echo "(".$FR_ID.")"." ".$FR_NAME; ?>
+											Forwarder : <?php echo "(" . $FR_ID . ")" . " " . $FR_NAME; ?>
 											<br />
 											Container No : ..............................
 											<br />
@@ -566,42 +580,31 @@ foreach($get_data_all_product_inbound_single as $data_row_all_product_inbound_si
 															
 																<!------------------------------------------------------------------------------------------------->
 																<?php
-																$array_si_product_detail_id = $_POST['si_product_detail_id'];
-																$array_si_product_detail_name = $_POST['si_product_detail_name'];
-																$array_si_product_detail_unit = $_POST['si_product_detail_unit'];
-																$array_si_product_detail_no = $_POST['si_product_detail_no'];
-																$array_si_product_detail_manufdate = $_POST['si_product_detail_manufdate'];
-																$array_si_product_detail_qty = $_POST['si_product_detail_qty'];
-																$array_si_product_detail_expired = $_POST['si_product_detail_expired'];
-																
-																$array_si_product_detail_no_length = count($array_si_product_detail_no);
-																
-																$index = 1;
-																for($x = 0; $x < $array_si_product_detail_no_length; $x++) {
-																	$si_product_detail_id = $array_si_product_detail_id[$x];
-																	$si_product_detail_name = $array_si_product_detail_name[$x];
-																	$si_product_detail_unit = $array_si_product_detail_unit[$x];
-																	$si_product_detail_no = $array_si_product_detail_no[$x];
-																	$si_product_detail_manufdate = $array_si_product_detail_manufdate[$x];
-																	$si_product_detail_qty = $array_si_product_detail_qty[$x];
-																	$si_product_detail_expired = $array_si_product_detail_expired[$x];
-																?>
+															$array_si_product_detail_id = $_POST['si_product_detail_id'];
+															$array_si_product_detail_name = $_POST['si_product_detail_name'];
+															$array_si_product_detail_unit = $_POST['si_product_detail_unit'];
+															$array_si_product_detail_no = $_POST['si_product_detail_no'];
+															$array_si_product_detail_manufdate = $_POST['si_product_detail_manufdate'];
+															$array_si_product_detail_qty = $_POST['si_product_detail_qty'];
+															$array_si_product_detail_expired = $_POST['si_product_detail_expired'];
+
+															$index = 1;
+															?>
 																<tr>
 																	<td><?php echo $index; ?></td>
-																	<td><?php echo $si_product_detail_id; ?></td>
-																	<td><?php echo $si_product_detail_name; ?></td>
-																	<td><?php echo $si_product_detail_unit; ?></td>
-																	<td><?php echo $si_product_detail_no; ?></td>
-																	<td><?php echo $si_product_detail_manufdate; ?></td>
-																	<td><?php echo $si_product_detail_qty; ?></td>
+																	<td><?php echo $array_si_product_detail_id; ?></td>
+																	<td><?php echo $array_si_product_detail_name; ?></td>
+																	<td><?php echo $array_si_product_detail_unit; ?></td>
+																	<td><?php echo $array_si_product_detail_no; ?></td>
+																	<td><?php echo $array_si_product_detail_manufdate; ?></td>
+																	<td><?php echo $array_si_product_detail_qty; ?></td>
 																	<td><input type="text" class="form-control" readonly="readonly"/></td>
 																	<td><input type="text" class="form-control" readonly="readonly"/></td>
-																	<td><?php echo $si_product_detail_expired; ?></td>
+																	<td><?php echo $array_si_product_detail_expired; ?></td>
 																<tr>
 																<?php
-																	$index++;
-																}
-																?>
+															$index++;
+															?>
 																<!------------------------------------------------------------------------------------------------->
 																
 															</tbody>

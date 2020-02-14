@@ -29,6 +29,7 @@ class M_library_database extends CI_Model
 	private $tb_product_quarantine = "tb_product_quarantine";
 	private $tb_product_sample = "tb_product_sample";
 	private $tb_product_return = "tb_product_return";
+	private $tb_product_stock = "tb_product_stock";
 	//-----------------------------------------------------------------------------------------------//
 	//-----------------------------------------------------------------------------------------------//
 	//-----------------------------------------------------------------------------------------------//
@@ -531,13 +532,13 @@ class M_library_database extends CI_Model
 	//-----------------------------------------------------------------------------------------------//
 	//-----------------------------------------------------------------------------------------------//
 	//rack
-	public function DB_GET_DATA_ALL_RACK()
+	public function DB_GET_DATA_ALL_RACK($SE_ID)
 	{
 		$result = "";
 		try {
 			$this->db->select('*');
 			$this->db->from($this->tb_rack);
-			$this->db->order_by('RK_ID', 'DESC');
+			$this->db->like('SE_ID', $SE_ID);
 			$query = $this->db->get();
 			if ($query->num_rows() > 0) {
 				return $query->result();
@@ -1504,6 +1505,22 @@ class M_library_database extends CI_Model
 		return $status;
 	}
 	//-----------------------------------------------------------------------------------------------//
+	//-----------------------------------------------------------------------------------------------//
+	public function DB_INSERT_DATA_PRODUCT_STOCK_EVO($data)
+	{
+		$status = false;
+		try {
+			$this->db->insert($this->tb_product_stock, $data);
+			if ($this->db->affected_rows() == 1) {
+				$status = true;
+			}
+		} catch (Exception $exc) {
+			$error = $exc->getMessage();
+			echo "[ERROR][M_LIBRARY_DATABASE][DB_INSERT_DATA_PRODUCT_STOCK]" . $error;
+		}
+		return $status;
+	}
+	//-----------------------------------------------------------------------------------------------//
 	public function DB_GET_DATA_ALL_PRODUCT_INBOUND()
 	{
 		$result = "";
@@ -1688,14 +1705,14 @@ class M_library_database extends CI_Model
 			tb_product_inbound.PTID_CONTAINER_NO, 
 			tb_product_inbound.PTID_CONTAINER_PLAT_NO, 
 			tb_product_inbound.PTID_SEAL_NO, 
-			tb_product_inbound.UR_ID, 
+			tb_product_inbound.UR_ID,  
 			tb_user.UR_NAME, 
 			tb_user.UR_PHONE, 
 			tb_user.UR_EMAIL, 
 			tb_user.GT_ID, 
 			tb_product_inbound.PTID_STATUS, 
 			tb_product_inbound.PTID_APP_BY, 
-			tb_product_inbound.PTID_QTY_TOTAL 
+			tb_product_inbound.PTID_QTY_TOTAL
 			FROM 
 			tb_product_inbound 
 			INNER JOIN tb_supplier ON tb_product_inbound.SR_ID = tb_supplier.SR_ID 
@@ -1735,6 +1752,7 @@ class M_library_database extends CI_Model
 			tb_product.PT_IS_MANUFDATE, 
 			tb_product.PTCY_ID, 
 			tb_product.SR_ID, 
+			tb_product.SE_ID,
 			tb_supplier.SR_NAME, 
 			tb_supplier.SR_PHONE, 
 			tb_supplier.SR_EMAIL, 
@@ -1754,7 +1772,7 @@ class M_library_database extends CI_Model
 			INNER JOIN tb_product ON tb_product_inbound_detail.PT_ID = tb_product.PT_ID 
 			INNER JOIN tb_supplier ON tb_product.SR_ID = tb_supplier.SR_ID 
 			WHERE tb_product_inbound_detail.PTID_ID = "' . $PTID_ID . '"
-			ORDER BY tb_product_inbound_detail.PT_ID ASC
+			ORDER BY tb_product_inbound_detail.RK_ID ASC
 			');
 			if ($query->num_rows() > 0) {
 				return $query->result();
@@ -2125,7 +2143,8 @@ class M_library_database extends CI_Model
 			tb_user.GT_ID, 
 			tb_product_outbound.PTOD_STATUS, 
 			tb_product_outbound.PTOD_APP_BY, 
-			tb_product_outbound.PTOD_QTY_TOTAL 
+			tb_product_outbound.PTOD_QTY_TOTAL,
+			tb_product_outbound.UPLOAD_DN 
 			FROM 
 			tb_product_outbound 
 			INNER JOIN tb_distributor ON tb_product_outbound.DR_ID = tb_distributor.DR_ID 
@@ -2204,6 +2223,7 @@ class M_library_database extends CI_Model
 			$query = $this->db->query('
 			SELECT
 			tb_product_outbound_detail.PTODDL_ID, 
+			tb_product_outbound_detail.PTIDDL_ID, 
 			tb_product_outbound_detail.PTODDL_DATE, 
 			tb_product_outbound_detail.PTOD_ID, 
 			tb_product_outbound_detail.PT_ID, 
@@ -2230,6 +2250,7 @@ class M_library_database extends CI_Model
 			tb_product_outbound_detail.PTODDL_MANUFDATE, 
 			tb_product_outbound_detail.PTODDL_EXPIRED, 
 			tb_product_outbound_detail.PTODDL_QTY, 
+			tb_product_outbound_detail.PTODDL_STOCK_INBOUND, 
 			tb_product_outbound_detail.PTODDL_QTY_GOOD, 
 			tb_product_outbound_detail.PTODDL_QTY_BAD 
 			FROM 
@@ -2459,10 +2480,9 @@ class M_library_database extends CI_Model
 		return $result;
 	}
 	//-----------------------------------------------------------------------------------------------//
-	public function DB_GET_DATA_ALL_PRODUCT_STOCK()
-	{
+	public function DB_GET_DATA_ALL_PRODUCT_STOCK(){
 		$result = "";
-		try {
+		try{
 			$query = $this->db->query('
 			SELECT 
 			tb_product_inbound_detail.PTIDDL_ID, 
@@ -2500,17 +2520,16 @@ class M_library_database extends CI_Model
 			if ($query->num_rows() > 0) {
 				return $query->result();
 			}
-		} catch (Exception $exc) {
+		}catch(Exception $exc){
 			$error = $exc->getMessage();
-			echo "[ERROR][M_LIBRARY_DATABASE][DB_GET_DATA_ALL_PRODUCT_STOCK]" . $error;
+			echo "[ERROR][M_LIBRARY_DATABASE][DB_GET_DATA_ALL_PRODUCT_STOCK]".$error;
 		}
 		return $result;
 	}
 	//-----------------------------------------------------------------------------------------------//
-	public function DB_GET_DATA_ALL_PRODUCT_STOCK_SINGLE($PT_ID)
-	{
+	public function DB_GET_DATA_ALL_PRODUCT_STOCK_SINGLE($PT_ID){
 		$result = "";
-		try {
+		try{
 			$query = $this->db->query('
 			SELECT 
 			tb_product_inbound_detail.PTIDDL_ID, 
@@ -2544,14 +2563,14 @@ class M_library_database extends CI_Model
 			tb_product_inbound_detail 
 			INNER JOIN tb_product ON tb_product_inbound_detail.PT_ID = tb_product.PT_ID 
 			INNER JOIN tb_rack ON tb_product_inbound_detail.RK_ID = tb_rack.RK_ID 
-			WHERE tb_product_inbound_detail.PT_ID = "' . $PT_ID . '" 
+			WHERE tb_product_inbound_detail.PT_ID = "'.$PT_ID.'" 
 			');
 			if ($query->num_rows() > 0) {
 				return $query->result();
 			}
-		} catch (Exception $exc) {
+		}catch(Exception $exc){
 			$error = $exc->getMessage();
-			echo "[ERROR][M_LIBRARY_DATABASE][DB_GET_DATA_ALL_PRODUCT_STOCK_SINGLE]" . $error;
+			echo "[ERROR][M_LIBRARY_DATABASE][DB_GET_DATA_ALL_PRODUCT_STOCK_SINGLE]".$error;
 		}
 		return $result;
 	}
@@ -2601,10 +2620,9 @@ class M_library_database extends CI_Model
 		return $result;
 	}
 	//-----------------------------------------------------------------------------------------------//
-	public function DB_GET_DATA_SEARCH_DETAIL_PRODUCT_STOCK($PT_ID)
-	{
+	public function DB_GET_DATA_SEARCH_DETAIL_PRODUCT_STOCK($PT_ID){
 		$result = "";
-		try {
+		try{
 			$query = $this->db->query('
 			SELECT 
 			PROCESS_STOCK.PT_ID, 
@@ -2619,7 +2637,7 @@ class M_library_database extends CI_Model
 			tb_product_inbound_detail 
 			INNER JOIN tb_product_inbound ON tb_product_inbound_detail.PTID_ID = tb_product_inbound.PTID_ID 
 			WHERE tb_product_inbound.PTID_STATUS = "APPROVE" 
-			AND tb_product_inbound_detail.PT_ID = "' . $PT_ID . '"
+			AND tb_product_inbound_detail.PT_ID = "'.$PT_ID.'"
 			
 			UNION ALL 
 			
@@ -2630,16 +2648,16 @@ class M_library_database extends CI_Model
 			tb_product_outbound_detail 
 			INNER JOIN tb_product_outbound ON tb_product_outbound_detail.PTOD_ID = tb_product_outbound.PTOD_ID 
 			WHERE tb_product_outbound.PTOD_STATUS = "APPROVE" 
-			AND tb_product_outbound_detail.PT_ID = "' . $PT_ID . '"
+			AND tb_product_outbound_detail.PT_ID = "'.$PT_ID.'"
 			) AS PROCESS_STOCK 
 			INNER JOIN tb_product ON PROCESS_STOCK.PT_ID = tb_product.PT_ID
 			');
 			if ($query->num_rows() > 0) {
 				return $query->result();
 			}
-		} catch (Exception $exc) {
+		}catch(Exception $exc){
 			$error = $exc->getMessage();
-			echo "[ERROR][M_LIBRARY_DATABASE][DB_GET_DATA_SEARCH_DETAIL_PRODUCT_STOCK]" . $error;
+			echo "[ERROR][M_LIBRARY_DATABASE][DB_GET_DATA_SEARCH_DETAIL_PRODUCT_STOCK]".$error;
 		}
 		return $result;
 	}
@@ -2923,6 +2941,7 @@ class M_library_database extends CI_Model
 			tb_product.PT_IS_MANUFDATE, 
 			tb_product.PTCY_ID, 
 			tb_product.SR_ID, 
+			tb_product.SE_ID, 
 			tb_supplier.SR_NAME, 
 			tb_supplier.SR_PHONE, 
 			tb_supplier.SR_EMAIL, 
@@ -3034,13 +3053,13 @@ class M_library_database extends CI_Model
 		return $result;
 	}
 	//-----------------------------------------------------------------------------------------------//
-	public function DB_CHECK_RACK_INBOUND_DETAIL_DRIVE_IN_EVO($RK_ID)
+	public function DB_CHECK_RACK_INBOUND_DETAIL_DRIVE_IN_EVO($SE_ID)
 	{
 		$result = "";
 		try {
-			$this->db->select('RK_ID');
+			$this->db->select('SE_ID');
 			$this->db->from($this->tb_product_inbound_detail);
-			$this->db->like('RK_ID', $RK_ID);
+			$this->db->like('SE_ID', $SE_ID);
 			$query = $this->db->get();
 			if ($query->num_rows() > 0) {
 				return $query->result();
@@ -3052,13 +3071,13 @@ class M_library_database extends CI_Model
 		return $result;
 	}
 	//-----------------------------------------------------------------------------------------------//
-	public function DB_CHECK_RACK_OUTBOUND_DETAIL_DRIVE_IN_EVO($RK_ID)
+	public function DB_CHECK_RACK_OUTBOUND_DETAIL_DRIVE_IN_EVO($SE_ID)
 	{
 		$result = "";
 		try {
-			$this->db->select('RK_ID');
+			$this->db->select('SE_ID');
 			$this->db->from($this->tb_product_outbound_detail);
-			$this->db->like('RK_ID', $RK_ID);
+			$this->db->like('SE_ID', $SE_ID);
 			$query = $this->db->get();
 			if ($query->num_rows() > 0) {
 				return $query->result();
@@ -3469,6 +3488,108 @@ class M_library_database extends CI_Model
 		}
 		return $result;
 	}
+
+	public function DB_GET_DATA_ALL_RACK_BY_STORAGE()
+	{
+		$result = "";
+		try {
+			$this->db->select('*');
+			$this->db->from($this->tb_rack);
+			// $this->db->where('SE_ID', $SE_ID);
+			$query = $this->db->get();
+			if ($query->num_rows() > 0) {
+				return $query->result();
+			}
+		} catch (Exception $exc) {
+			$error = $exc->getMessage();
+			echo "[ERROR][M_LIBRARY_DATABASE][DB_GET_DATA_ALL_RACK_BY_STORAGE]" . $error;
+		}
+		return $result;
+	}
+
+	public function DB_UPDATE_DATA_RACK_INBOUND($id, $data)
+	{
+		$status = false;
+		try {
+			$this->db->where('PTIDDL_ID', $id);
+			$this->db->update($this->tb_product_inbound, $data);
+			if ($this->db->affected_rows() == 1) {
+				$status = true;
+			}
+		} catch (Exception $exc) {
+			$error = $exc->getMessage();
+			echo "[ERROR][M_LIBRARY_DATABASE][DB_UPDATE_DATA_RACK_INBOUND]" . $error;
+		}
+		return $status;
+	}
+
+	public function DB_ALL_RACK($SE_ID)
+	{
+		$result = "";
+		try {
+			$this->db->select('SE_ID');
+			$this->db->from($this->tb_rack);
+			$this->db->like('SE_ID', $SE_ID);
+			$query = $this->db->get();
+			if ($query->num_rows() > 0) {
+				return $query->result();
+			}
+		} catch (Exception $exc) {
+			$error = $exc->getMessage();
+			echo "[ERROR][M_LIBRARY_DATABASE][DB_CHECK_RACK_INBOUND_DETAIL_DRIVE_IN_EVO]" . $error;
+		}
+		return $result;
+	}
+
+	public function DB_GET_DATA_ALL_INBOUND_DETAIL($RK_ID)
+	{
+		$result = "";
+		try {
+			$this->db->select('*');
+			$this->db->from($this->tb_product_inbound_detail);
+			$this->db->join('tb_product', 'tb_product.PT_ID = tb_product_inbound_detail.PT_ID', 'left');	
+			$this->db->where('RK_ID', $RK_ID);
+			$query = $this->db->get();
+			if ($query->num_rows() > 0) {
+				return $query->result();
+			}
+		} catch (Exception $exc) {
+			$error = $exc->getMessage();
+			echo "[ERROR][M_LIBRARY_DATABASE][DB_GET_DATA_ALL_INBOUND_DETAIL]" . $error;
+		}
+		return $result;
+	}
+
+	public function DB_GET_DATA_PRODUCT_OUTBOUND()
+	{
+		$result = "";
+		try {
+			$this->db->select('ID_P_OUTBOUND');
+			$this->db->from($this->tb_product_outbound_detail);
+			$query = $this->db->get();
+			if ($query->num_rows() > 0) {
+				return $query->result();
+			}
+		} catch (Exception $exc) {
+			$error = $exc->getMessage();
+			echo "[ERROR][M_LIBRARY_DATABASE][DB_GET_DATA_PRODUCT_INBOUND_DETAIL_SINGLE_EVO]" . $error;
+		}
+		return $result;
+	}
+
+	 function simpan_upload($su_id_lastest,$su_id,$diterima,$kembali,$file){
+        $data = array(
+                'PTOD_DO_NO' => $su_id,
+                'UPLOAD_DN' => $file,
+                'TGL_DITERIMA' => $diterima,
+                'TGL_KEMBALI' => $kembali
+            );  
+        $this->db->where('PTOD_DO_NO', $su_id_lastest);
+        $result= $this->db->update('tb_product_outbound',$data);
+        return $result;
+    }
+
+
 	//-----------------------------------------------------------------------------------------------//
 	//-----------------------------------------------------------------------------------------------//
 	//-----------------------------------------------------------------------------------------------//

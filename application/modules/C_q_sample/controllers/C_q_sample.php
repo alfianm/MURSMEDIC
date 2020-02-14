@@ -50,31 +50,19 @@ class C_q_sample extends CI_Controller
 		//-----------------------------------------------------------------------------------------------//
 		$objPHPExcel->setActiveSheetIndex(0)
 			->setCellValue('A1', 'No')
-			->setCellValue('B1', 'Doc ID')
-			->setCellValue('C1', 'Tgl')
-			->setCellValue('D1', 'ID')
-			->setCellValue('E1', 'Product Code')
-			->setCellValue('F1', 'Label')
-			->setCellValue('G1', 'SN / Batch')
-			->setCellValue('H1', 'Manufdate')
-			->setCellValue('I1', 'Expired Date')
-			->setCellValue('J1', 'Qty')
-			->setCellValue('K1', 'Status');
+			->setCellValue('B1', 'ID Product')
+			->setCellValue('C1', 'Name')
+			->setCellValue('D1', 'Qty')
+			->setCellValue('E1', 'Status');
 		//-----------------------------------------------------------------------------------------------//
 		$index = 1;
 		foreach ($table_data_all as $data_row) {
 			$objPHPExcel->setActiveSheetIndex(0)
 				->setCellValue('A' . ($index + 1), $index)
-				->setCellValue('B' . ($index + 1), $data_row->PTQE_ID)
-				->setCellValue('C' . ($index + 1), $data_row->PTQE_DATE)
-				->setCellValue('D' . ($index + 1), $data_row->PTQE_GID)
-				->setCellValue('E' . ($index + 1), $data_row->PT_ID)
-				->setCellValue('F' . ($index + 1), $data_row->PTQE_LABEL)
-				->setCellValue('G' . ($index + 1), $data_row->PTQE_NO)
-				->setCellValue('H' . ($index + 1), $data_row->PTQE_MANUFDATE)
-				->setCellValue('I' . ($index + 1), $data_row->PTQE_EXPIRED)
-				->setCellValue('J' . ($index + 1), $data_row->PTQE_QTY)
-				->setCellValue('K' . ($index + 1), $data_row->PTQE_STATUS);
+				->setCellValue('B' . ($index + 1), $data_row->PT_ID)
+				->setCellValue('C' . ($index + 1), $data_row->PTSP_NAME)
+				->setCellValue('D' . ($index + 1), $data_row->PTSP_QTY)
+				->setCellValue('E' . ($index + 1), $data_row->PTSP_STATUS);
 			$index++;
 		}
 		//-----------------------------------------------------------------------------------------------//

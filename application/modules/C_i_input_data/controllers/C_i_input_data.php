@@ -42,6 +42,7 @@ class C_i_input_data extends CI_Controller
 			';
 			exit();
 		}
+		date_default_timezone_set('Asia/Jakarta');
 		//-----------------------------------------------------------------------------------------------//
 		$si_id = trim($this->input->post('si_id'));
 
@@ -152,6 +153,7 @@ class C_i_input_data extends CI_Controller
 				'PTID_ID' => $si_id,
 				'PT_ID' => $array_si_product_detail_id[$x],
 				'RK_ID' => "",
+				'SE_ID' => "",
 				'PTIDDL_LABEL' => "",
 				'PTIDDL_NO' => $array_si_product_detail_no[$x],
 				'PTIDDL_MANUFDATE' => $array_si_product_detail_manufdate[$x],
@@ -163,6 +165,15 @@ class C_i_input_data extends CI_Controller
 			//-----------------------------------------------------------------------------------------------//
 			$is_ok = $this->M_library_database->DB_INSERT_DATA_PRODUCT_INBOUND_DETAIL($data_insert);
 			//-----------------------------------------------------------------------------------------------//
+			// $data_insert_stock = array(
+   //              'PTS_ID' => $this->M_library_module->GENERATOR_REFF(),
+   //              'PTID_ID' => $si_id,
+   //              'PTIDDL_DATE' => date('Y-m-d H:i:s'),
+   //              'PT_ID' => $array_si_product_detail_id[$x],
+   //              'RK_ID' => "",
+   //              'PTIDDL_QTY_GOOD' => 0
+   //          );  
+   //          $is_ok2 = $this->M_library_database->DB_INSERT_DATA_PRODUCT_STOCK($data_insert_stock);
 		}
 		//LOOP
 		//-----------------------------------------------------------------------------------------------//

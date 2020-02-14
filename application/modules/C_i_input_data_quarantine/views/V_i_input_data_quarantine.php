@@ -353,6 +353,20 @@ if (empty($get_data_product) || $get_data_product == "") {
 								</a>
 								<b class="arrow"></b>
 							</li>
+							<li class="">
+								<a href="<?php echo site_url('q_sample'); ?>">
+								<i class="menu-icon fa fa-book"></i>
+								Sample
+								</a>
+								<b class="arrow"></b>
+							</li>
+							<li class="">
+								<a href="<?php echo site_url('q_return'); ?>">
+								<i class="menu-icon fa fa-book"></i>
+								Return
+								</a>
+								<b class="arrow"></b>
+							</li>
 						</ul>
 					</li>
 				</ul>
@@ -483,7 +497,7 @@ if (empty($get_data_product) || $get_data_product == "") {
 							echo '
 								<script>
 									alert("DATA NOT FOUND");
-									window.location.href = "'.base_url('C_notification').'";
+									window.location.href = "'.base_url('C_i_input_data_quarantine').'";
 								</script>
 							';
 							exit();
@@ -615,7 +629,7 @@ if (empty($get_data_product) || $get_data_product == "") {
 														<tbody>
 															<tr id="addr0">
 																<td>1</td>
-<td><input name="si_product_id" type="text" class="form-control si_product_id" required="required" readonly="readonly" value="<?php echo $PT_ID ?>"/></td>
+<td><input name="si_product_id" id="si_product_id" type="text" class="form-control si_product_id" required="required" readonly="readonly" value="<?php echo $PT_ID ?>"/></td>
 <td><input name="si_product_name" type="text" value="<?php echo $PT_NAME ?>" class="form-control si_product_name" required="required" readonly="readonly"/></td>
 <td><input name="si_product_unit" type="text" value="<?php echo $PT_UNIT ?>" class="form-control si_product_unit" required="required" readonly="readonly"/></td>
 <td><input name="si_product_type" type="text" value="<?php echo $PT_TYPE ?>" class="form-control si_product_type" required="required" readonly="readonly"/></td>

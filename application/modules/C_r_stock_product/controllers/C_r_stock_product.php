@@ -1,26 +1,29 @@
 <?php
 //-----------------------------------------------------------------------------------------------//
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 //-----------------------------------------------------------------------------------------------//
-class C_r_stock_product extends CI_Controller{
+class C_r_stock_product extends CI_Controller
+{
 	//-----------------------------------------------------------------------------------------------//
 	//-----------------------------------------------------------------------------------------------//
 	//-----------------------------------------------------------------------------------------------//
 	//-----------------------------------------------------------------------------------------------//
 	//-----------------------------------------------------------------------------------------------//
-	public function __construct(){
-        parent::__construct();
-		
-		if($this->session->userdata('session_mursmedic_status') != "LOGIN"){
+	public function __construct()
+	{
+		parent::__construct();
+
+		if ($this->session->userdata('session_mursmedic_status') != "LOGIN") {
 			redirect(site_url("index"));
 		}
-    }
+	}
 	//-----------------------------------------------------------------------------------------------//
 	//-----------------------------------------------------------------------------------------------//
 	//-----------------------------------------------------------------------------------------------//
 	//-----------------------------------------------------------------------------------------------//
 	//-----------------------------------------------------------------------------------------------//
-	public function index(){
+	public function index()
+	{
 		$this->load->view('V_r_stock_product');
 	}
 	//-----------------------------------------------------------------------------------------------//
@@ -28,12 +31,13 @@ class C_r_stock_product extends CI_Controller{
 	//-----------------------------------------------------------------------------------------------//
 	//-----------------------------------------------------------------------------------------------//
 	//-----------------------------------------------------------------------------------------------//
-	public function data_download(){
-		if($_SERVER['REQUEST_METHOD']!="POST"){
+	public function data_download()
+	{
+		if ($_SERVER['REQUEST_METHOD'] != "POST") {
 			echo '
 				<script>
 					alert("UNKNOWN COMMAND");
-					window.location.href = "'.site_url('r_stock_product').'";
+					window.location.href = "' . site_url('r_stock_product') . '";
 				</script>
 			';
 			exit();
@@ -45,31 +49,31 @@ class C_r_stock_product extends CI_Controller{
 		$objPHPExcel = new PHPExcel();
 		//-----------------------------------------------------------------------------------------------//
 		$objPHPExcel->setActiveSheetIndex(0)
-			->setCellValue('A1','No')
-			->setCellValue('B1','Code')
-			->setCellValue('C1','Name')
-			->setCellValue('D1','Stock')
-			->setCellValue('E1','Unit');
+			->setCellValue('A1', 'No')
+			->setCellValue('B1', 'Code')
+			->setCellValue('C1', 'Name')
+			->setCellValue('D1', 'Stock')
+			->setCellValue('E1', 'Unit');
 		//-----------------------------------------------------------------------------------------------//
 		$index = 1;
-		foreach($table_data_all as $data_row){
+		foreach ($table_data_all as $data_row) {
 			$objPHPExcel->setActiveSheetIndex(0)
-				->setCellValue('A'.($index+1),$index)
-				->setCellValue('B'.($index+1),$data_row->PT_ID)
-				->setCellValue('C'.($index+1),$data_row->PT_NAME)
-				->setCellValue('D'.($index+1),$data_row->STOCK)
-				->setCellValue('E'.($index+1),$data_row->PT_UNIT);
+				->setCellValue('A' . ($index + 1), $index)
+				->setCellValue('B' . ($index + 1), $data_row->PT_ID)
+				->setCellValue('C' . ($index + 1), $data_row->PT_NAME)
+				->setCellValue('D' . ($index + 1), $data_row->STOCK)
+				->setCellValue('E' . ($index + 1), $data_row->PT_UNIT);
 			$index++;
 		}
 		//-----------------------------------------------------------------------------------------------//
-		header("Last-Modified: ".gmdate("D, d M Y H:i:s")."GMT");
+		header("Last-Modified: " . gmdate("D, d M Y H:i:s") . "GMT");
 		header("Cache-Control: no-store, no-cache, must-revalidate");
-		header("Cache-Control: post-check=0, pre-check=0",false);
+		header("Cache-Control: post-check=0, pre-check=0", false);
 		header("Pragma: no-cache");
 		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-		header('Content-Disposition: attachment;filename="'.gmdate("D, d M Y H:i:s").'.xls"');
+		header('Content-Disposition: attachment;filename="' . gmdate("D, d M Y H:i:s") . '.xls"');
 		//-----------------------------------------------------------------------------------------------//
-		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel,'Excel5');
+		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
 		$objWriter->save("php://output");
 		//-----------------------------------------------------------------------------------------------//
 		exit();

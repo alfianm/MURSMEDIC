@@ -257,6 +257,15 @@ $SESSION_GRANT = $this->session->userdata("session_mursmedic_grant");
 									</a>
 									<b class="arrow"></b>
 								</li>
+								<?php if ($SESSION_GRANT == "ADMIN") { ?>
+								<li class="">
+									<a href="<?php echo site_url('i_inbound'); ?>">
+										<i class="menu-icon fa fa-cloud-download"></i>
+										Data Inbound
+									</a>
+									<b class="arrow"></b>
+								</li>
+								<?php } ?>
 							</ul>
 						</li>
 					</ul>
@@ -322,6 +331,20 @@ $SESSION_GRANT = $this->session->userdata("session_mursmedic_grant");
 									<a href="<?php echo site_url('q_data'); ?>">
 										<i class="menu-icon fa fa-cloud-upload"></i>
 										Data
+									</a>
+									<b class="arrow"></b>
+								</li>
+								<li class="">
+									<a href="<?php echo site_url('q_sample'); ?>">
+									<i class="menu-icon fa fa-book"></i>
+									Sample
+									</a>
+									<b class="arrow"></b>
+								</li>
+								<li class="">
+									<a href="<?php echo site_url('q_return'); ?>">
+									<i class="menu-icon fa fa-book"></i>
+									Return
 									</a>
 									<b class="arrow"></b>
 								</li>

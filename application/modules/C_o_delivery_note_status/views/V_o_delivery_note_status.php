@@ -335,6 +335,20 @@ $SESSION_GRANT = $this->session->userdata("session_mursmedic_grant");
 									</a>
 									<b class="arrow"></b>
 								</li>
+								<li class="">
+									<a href="<?php echo site_url('q_sample'); ?>">
+									<i class="menu-icon fa fa-book"></i>
+									Sample
+									</a>
+									<b class="arrow"></b>
+								</li>
+								<li class="">
+									<a href="<?php echo site_url('q_return'); ?>">
+									<i class="menu-icon fa fa-book"></i>
+									Return
+									</a>
+									<b class="arrow"></b>
+								</li>
 							</ul>
 						</li>
 					</ul>
@@ -501,7 +515,11 @@ $SESSION_GRANT = $this->session->userdata("session_mursmedic_grant");
 															</div>
 														</td>
 														<td>
-															<input type="file" id="si_file" name="si_file" class="form-control-file" required="required">
+															<?php if ($data_row->UPLOAD_DN == NULL): ?>
+																<?php echo "File tidak ada." ?>
+															<?php else: ?>
+																<?php echo '<a href="'.$data_row->UPLOAD_DN.'" title="">'.$data_row->UPLOAD_DN.'</a>' ?>
+															<?php endif ?>
 														</td>
 														
 														<td>
@@ -583,7 +601,7 @@ $SESSION_GRANT = $this->session->userdata("session_mursmedic_grant");
 	<div id="modal-form-update" class="modal" tabindex="-1" role="dialog" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
-				<form class="form-horizontal" action="<?php echo site_url('o_delivery_note_status'); ?>" method="post" enctype="multipart/form-data">
+				<form class="form-horizontal" id="submit">
 				
 					<div class="modal-header">
 						<h4 class="blue bigger">Form Update Data</h4>
@@ -604,6 +622,30 @@ $SESSION_GRANT = $this->session->userdata("session_mursmedic_grant");
 									<label for="su_id" class="col-xs-12 col-sm-3 control-label" style="text-align:left">DO No</label>
 									<div class="col-xs-12 col-sm-9">
 										<input type="text" id="su_id" name="su_id" class="form-control su_id" maxlength="150" autocomplete="off" onkeyup="auto_caps(this)" required="required"/>
+									</div>
+								</div>
+							</div>
+							<div class="col-xs-12">
+								<div class="form-group">
+									<label for="diterima" class="col-xs-12 col-sm-3 control-label" style="text-align:left">Tanggal diterima</label>
+									<div class="col-xs-12 col-sm-9">
+										<input type="text" id="diterima" name="diterima" class="form-control diterima date-picker" maxlength="150" autocomplete="off" onkeyup="auto_caps(this)" required="required"/>
+									</div>
+								</div>
+							</div>
+							<div class="col-xs-12">
+								<div class="form-group">
+									<label for="kembali" class="col-xs-12 col-sm-3 control-label" style="text-align:left">Tanggal kembali</label>
+									<div class="col-xs-12 col-sm-9">
+										<input type="text" id="kembali" name="kembali" class="form-control kembali date-picker" maxlength="150" autocomplete="off" onkeyup="auto_caps(this)" required="required"/>
+									</div>
+								</div>
+							</div>
+							<div class="col-xs-12">
+								<div class="form-group">
+									<label for="upload_dn" class="col-xs-12 col-sm-3 control-label" style="text-align:left">Upload DN</label>
+									<div class="col-xs-12 col-sm-9">
+										<input type="file" id="upload_dn" name="upload_dn" class="form-control upload_dn" readonly="readonly"/>
 									</div>
 								</div>
 							</div>
@@ -692,6 +734,27 @@ $SESSION_GRANT = $this->session->userdata("session_mursmedic_grant");
 
 	<!-- inline scripts related to this page -->
 	<script type="text/javascript">
+
+		$(document).ready(function(){
+ 
+        $('#submit').submit(function(e){
+	            e.preventDefault(); 
+	                 $.ajax({
+	                     url:'<?php echo base_url();?>C_o_delivery_note_status/update',
+	                     type:"post",
+	                     data:new FormData(this),
+	                     processData:false,
+	                     contentType:false,
+	                     cache:false,
+	                     async:false,
+	                      success: function(data){
+	                          alert("Upload Image Berhasil.");
+	                   }
+	                 });
+	            });
+	         
+	 
+	    });
 		//-----------------------------------------------------------------------------------------------//
 		function web_reload() {
 			location.href=location.href

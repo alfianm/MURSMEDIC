@@ -79,7 +79,26 @@ class C_o_delivery_note_status extends CI_Controller{
 	//-----------------------------------------------------------------------------------------------//
 	//-----------------------------------------------------------------------------------------------//
 	//-----------------------------------------------------------------------------------------------//
-	//???
+	function update(){
+        $config['upload_path']="./template/backend/assets/file";
+        $config['allowed_types']='pdf|pptx|doc|docx|ppt';
+        $config['encrypt_name'] = TRUE;
+         
+        $this->load->library('upload',$config);
+        if($this->upload->do_upload("file")){
+            $data = array('upload_data' => $this->upload->data());
+ 
+            $su_id_lastest= $this->input->post('su_id_lastest');
+            $su_id= $this->input->post('su_id');
+            $diterima= $this->input->post('diterima');
+            $kembali= $this->input->post('kembali');
+            $file= $data['upload_data']['file_name']; 
+             
+            $result= $this->M_library_database->simpan_upload($su_id_lastest,$su_id,$diterima,$kembali,$file);
+            echo json_decode($result);
+        }
+ 
+     }
 	//-----------------------------------------------------------------------------------------------//
 	//-----------------------------------------------------------------------------------------------//
 	//-----------------------------------------------------------------------------------------------//

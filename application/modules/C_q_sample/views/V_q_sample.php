@@ -525,13 +525,9 @@ if (empty($get_data_product) || $get_data_product == "") {
 													<thead>
 														<tr>
 															<th>No</th>
-															<th>Doc ID</th>
 															<th>ID Product</th>
 															<th>Name</th>
-															<th>Date</th>
-															<th>SN / BATCH</th>
 															<th>Qty</th>
-															<th>Expired Date</th>
 															<th>Status</th>
 														</tr>
 													</thead>
@@ -556,26 +552,39 @@ if (empty($get_data_product) || $get_data_product == "") {
 														//-----------------------------------------------------------------------------------------------//
 													if ($is_continue) {
 														$index = 1;
-														foreach ($get_data as $data_row) :
-														?>
+														$sum_stock = 0;
+														foreach ($get_data as $data_row) {
+															?>
 
 														<!-- Table Row -->
 														<tr>
 															<td><?php echo $index; ?></td>
-															<td><?php echo $data_row->PTID_ID; ?></td>
 															<td><?php echo $data_row->PT_ID; ?></td>
 															<td><?php echo $data_row->PTSP_NAME; ?></td>
-															<td><?php echo $data_row->PTSP_DATE; ?></td>
-															<td><?php echo $data_row->PTSP_NO; ?></td>
 															<td><?php echo $data_row->PTSP_QTY; ?></td>
-															<td><?php echo $data_row->PTSP_EXPIRED; ?></td>
 															<td><?php echo $data_row->PTSP_STATUS; ?></td>
 														</tr>
 														<!-- Table Row -->
 
 														<?php
 													$index++;
-													endforeach;
+													$sum_stock += ($data_row->PTSP_QTY);
+
+												}
+												?>
+
+														<tr>
+															<td colspan="4">Sum Product Item</td>
+															<td><?php echo ($index - 1); ?></td>
+														<tr>
+														<tr>
+															<td colspan="4">Sum Stock</td>
+															<td><?php echo $sum_stock; ?></td>
+														<tr>
+														<?php
+													if ($sum_stock == 0) {
+														$is_continue = false;
+													}
 												}
 												?>
 														
@@ -599,7 +608,7 @@ if (empty($get_data_product) || $get_data_product == "") {
 									<p>
 										<button id="btn_print" name="btn_print" class="btn btn-info btn-xs" onclick="printIt('printMe')"><i class="fa fa-print"></i></button>
 	
-										<form action="<?php echo site_url('C_q_data/data_download'); ?>" method="post" enctype="multipart/form-data">
+										<form action="<?php echo site_url('C_q_sample/data_download'); ?>" method="post" enctype="multipart/form-data">
 											<input type="hidden" id="table_data_all" name="table_data_all" value="<?php echo base64_encode(serialize($get_data)); ?>" required="required"/>
 											<button type="submit" id="btn_download" name="btn_download" class="btn btn-info btn-sm"><i class="fa fa-download"></i> Download *</button>
 										</form>

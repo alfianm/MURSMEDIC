@@ -41,7 +41,7 @@ class C_o_input_data extends CI_Controller{
 		//-----------------------------------------------------------------------------------------------//
 		$si_id = trim($this->input->post('si_id'));
 
-		$si_date_send = trim($this->input->post('si_date_send'));//2018-12-18
+		$si_date_send = trim($this->input->post('si_date_send'));
 		$si_distributor_id = trim($this->input->post('si_distributor_id'));
 		$si_do_no = "";
 		$si_order_no = trim($this->input->post('si_order_no'));
@@ -50,18 +50,6 @@ class C_o_input_data extends CI_Controller{
 		$si_driver = "";
 		$si_ekspedisi_id = trim($this->input->post('si_ekspedisi_id'));
 		$si_seal_no = "";
-		//-----------------------------------------------------------------------------------------------//
-		$si_date_send_formated = $this->M_library_module->CLEAN_STRING($si_date_send);
-		$si_date_now_formated = $this->M_library_module->CLEAN_STRING(date('Y-m-d'));
-		if($si_date_send_formated < $si_date_now_formated){
-			echo '
-				<script>
-					alert("TGL KIRIM TELAH LEWAT");
-					window.location.href = "'.site_url('o_input_data').'";
-				</script>
-			';
-			exit();
-		}
 		//-----------------------------------------------------------------------------------------------//
 		//SAMPLE:PT_ID[]PT_NAME[]PT_UNIT[]PT_UNIT_MAX[]PT_TYPE[]PT_IS_MANUFDATE[]PT_STOCK
 		//SAMPLE VALUE:ID PRODUCT A[]PRODUCT A[]BOX[]1[]SN[]NO[]5

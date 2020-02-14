@@ -341,6 +341,20 @@ if(empty($get_data_approve)||$get_data_approve==""){
 									</a>
 									<b class="arrow"></b>
 								</li>
+								<li class="">
+									<a href="<?php echo site_url('q_sample'); ?>">
+									<i class="menu-icon fa fa-book"></i>
+									Sample
+									</a>
+									<b class="arrow"></b>
+								</li>
+								<li class="">
+									<a href="<?php echo site_url('q_return'); ?>">
+									<i class="menu-icon fa fa-book"></i>
+									Return
+									</a>
+									<b class="arrow"></b>
+								</li>
 							</ul>
 						</li>
 					</ul>

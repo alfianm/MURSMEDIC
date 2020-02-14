@@ -37,10 +37,10 @@ class C_i_input_data_quarantine extends CI_Controller
 		$repack = trim($this->input->post('repack'));
 
 		if ($repack_total < $repack) {
-				echo '
+			echo '
 				<script>
 					alert("LESS PRODUCK");
-					window.location.href = "'.site_url('q_data').'";
+					window.location.href = "' . site_url('q_data') . '";
 				</script>
 			';
 			exit();
@@ -54,7 +54,7 @@ class C_i_input_data_quarantine extends CI_Controller
 				"PTQE_QTY" => $total_repack
 			];
 
-			$is_ok = $this->M_library_database->UPDATE_QUARANTINE($repack_id,$data_update_destroy);
+			$is_ok = $this->M_library_database->UPDATE_QUARANTINE($repack_id, $data_update_destroy);
 		}
 
 		if ($total_repack == 0) {
@@ -83,6 +83,7 @@ class C_i_input_data_quarantine extends CI_Controller
 			';
 			exit();
 		}
+		date_default_timezone_set('Asia/Jakarta');
 		//-----------------------------------------------------------------------------------------------//
 		$si_id = trim($this->input->post('si_id'));
 
@@ -103,13 +104,6 @@ class C_i_input_data_quarantine extends CI_Controller
 		$array_si_product_qty = $_POST['si_product_qty'];
 		$array_si_product_expired = $_POST['si_product_expired'];
 
-		$array_si_product_id_length = count($array_si_product_id);
-		$sum_qty_total = 0;
-		for ($x = 0; $x < $array_si_product_id_length; $x++) {
-			$sum_qty_total += $array_si_product_qty[$x];
-		}
-		//-----------------------------------------------------------------------------------------------//
-		$si_qty_total = $sum_qty_total;
 		//-----------------------------------------------------------------------------------------------//
 		$data_insert = array(
 			'PTID_ID' => $si_id,
@@ -127,7 +121,7 @@ class C_i_input_data_quarantine extends CI_Controller
 			'UR_ID' => $this->session->userdata("session_mursmedic_id"),
 			'PTID_STATUS' => "WAITING",
 			'PTID_APP_BY' => "",
-			'PTID_QTY_TOTAL' => $si_qty_total
+			'PTID_QTY_TOTAL' => $array_si_product_qty
 		);
 		//-----------------------------------------------------------------------------------------------//
 		$is_ok = $this->M_library_database->DB_INSERT_DATA_PRODUCT_INBOUND($data_insert);
@@ -158,7 +152,7 @@ class C_i_input_data_quarantine extends CI_Controller
 	//-----------------------------------------------------------------------------------------------//
 	//-----------------------------------------------------------------------------------------------//
 	//-----------------------------------------------------------------------------------------------//
-	public function data_insert_detail()
+	public function data_insert_detail_q()
 	{
 		if ($_SERVER['REQUEST_METHOD'] != "POST") {
 			echo '
@@ -172,6 +166,7 @@ class C_i_input_data_quarantine extends CI_Controller
 		date_default_timezone_set('Asia/Jakarta');
 		//-----------------------------------------------------------------------------------------------//
 		$si_id = trim($this->input->post('si_id'));
+		
 		//-----------------------------------------------------------------------------------------------//
 		$array_si_product_detail_id = $_POST['si_product_detail_id'];
 		$array_si_product_detail_no = $_POST['si_product_detail_no'];
@@ -180,31 +175,32 @@ class C_i_input_data_quarantine extends CI_Controller
 		$si_product_detail_expired = $_POST['si_product_detail_expired'];
 
 		$array_si_product_detail_no_length = count($array_si_product_detail_no);
+
 		//-----------------------------------------------------------------------------------------------//
 		//LOOP
-		for ($x = 0; $x < $array_si_product_detail_no_length; $x++) {
+		
 			//-----------------------------------------------------------------------------------------------//
-			$si_detail_id = $this->M_library_module->GENERATOR_REFF();
-			$si_detail_date = date('Y-m-d H:i:s');
 			//-----------------------------------------------------------------------------------------------//
-			$data_insert = array(
-				'PTIDDL_ID' => $si_detail_id,
-				'PTIDDL_DATE' => $si_detail_date,
-				'PTID_ID' => $si_id,
-				'PT_ID' => $array_si_product_detail_id[$x],
-				'RK_ID' => "",
-				'PTIDDL_LABEL' => "",
-				'PTIDDL_NO' => $array_si_product_detail_no[$x],
-				'PTIDDL_MANUFDATE' => $array_si_product_detail_manufdate[$x],
-				'PTIDDL_EXPIRED' => $si_product_detail_expired[$x],
-				'PTIDDL_QTY' => $array_si_product_detail_qty[$x],
-				'PTIDDL_QTY_GOOD' => 0,
-				'PTIDDL_QTY_BAD' => 0
-			);
+		$si_detail_id = $this->M_library_module->GENERATOR_REFF();
+		$si_detail_date = date('Y-m-d H:i:s');
 			//-----------------------------------------------------------------------------------------------//
-			$is_ok = $this->M_library_database->DB_INSERT_DATA_PRODUCT_INBOUND_DETAIL($data_insert);
+		$data_insert = array(
+			'PTIDDL_ID' => $si_detail_id,
+			'PTIDDL_DATE' => $si_detail_date,
+			'PTID_ID' => $si_id,
+			'PT_ID' => $array_si_product_detail_id,
+			'RK_ID' => "",
+			'PTIDDL_LABEL' => "",
+			'PTIDDL_NO' => $array_si_product_detail_no,
+			'PTIDDL_MANUFDATE' => $array_si_product_detail_manufdate,
+			'PTIDDL_EXPIRED' => $si_product_detail_expired,
+			'PTIDDL_QTY' => $array_si_product_detail_qty,
+			'PTIDDL_QTY_GOOD' => 0,
+			'PTIDDL_QTY_BAD' => 0
+		);
 			//-----------------------------------------------------------------------------------------------//
-		}
+		$is_ok = $this->M_library_database->DB_INSERT_DATA_PRODUCT_INBOUND_DETAIL($data_insert);
+
 		//LOOP
 		//-----------------------------------------------------------------------------------------------//
 		//INSERT LOG
@@ -216,7 +212,7 @@ class C_i_input_data_quarantine extends CI_Controller
 		);
 		$is_log = $this->M_library_database->DB_INSERT_DATA_LOG($data_log);
 		//-----------------------------------------------------------------------------------------------//
-		$this->load->view('V_i_input_data_detail_print');
+		$this->load->view('V_i_input_data_detail_print_quarantine');
 	}
 	//-----------------------------------------------------------------------------------------------//
 	//-----------------------------------------------------------------------------------------------//

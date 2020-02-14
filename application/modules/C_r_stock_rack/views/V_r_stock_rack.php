@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 //-----------------------------------------------------------------------------------------------//
 $SESSION_ID = $this->session->userdata("session_mursmedic_id");
 $SESSION_NAME = $this->session->userdata("session_mursmedic_name");
@@ -19,7 +19,7 @@ $SESSION_GRANT = $this->session->userdata("session_mursmedic_grant");
 	<title><?php echo $this->M_library_module->WEB_TITLE; ?></title>
 	<meta name="description" content="RL" />
 	<meta name="author" content="RL" />
-	<link rel="icon" href="<?php echo base_url('template/rion/'.$this->M_library_module->WEB_ICON); ?>" />
+	<link rel="icon" href="<?php echo base_url('template/rion/' . $this->M_library_module->WEB_ICON); ?>" />
 
 	<!-- CSS / JAVA SCRIPT / BOOTSTRAP / ETC -->
 	<!-- bootstrap & fontawesome -->
@@ -335,6 +335,20 @@ $SESSION_GRANT = $this->session->userdata("session_mursmedic_grant");
 									</a>
 									<b class="arrow"></b>
 								</li>
+								<li class="">
+									<a href="<?php echo site_url('q_sample'); ?>">
+									<i class="menu-icon fa fa-book"></i>
+									Sample
+									</a>
+									<b class="arrow"></b>
+								</li>
+								<li class="">
+									<a href="<?php echo site_url('q_return'); ?>">
+									<i class="menu-icon fa fa-book"></i>
+									Return
+									</a>
+									<b class="arrow"></b>
+								</li>
 							</ul>
 						</li>
 					</ul>
@@ -385,16 +399,6 @@ $SESSION_GRANT = $this->session->userdata("session_mursmedic_grant");
 							<a href="<?php echo site_url('log'); ?>">
 								<i class="menu-icon fa fa-caret-right"></i>
 								Log
-							</a>
-							<b class="arrow"></b>
-						</li>
-					</ul>
-
-					<ul class="submenu">
-						<li class="active">
-							<a href="<?php echo site_url('q_sample'); ?>">
-								<i class="menu-icon fa fa-caret-right"></i>
-								Sample
 							</a>
 							<b class="arrow"></b>
 						</li>
@@ -450,22 +454,23 @@ $SESSION_GRANT = $this->session->userdata("session_mursmedic_grant");
 												<select class="chosen-select form-control" id="ss_id" name="ss_id" data-placeholder="Please Choose">
 													<option value="">Please Choose</option>
 													<?php
-													$is_continue_ext = true;
-													$get_data_ext = $this->M_library_database->DB_GET_DATA_ALL_RACK();
-													if(empty($get_data_ext)||$get_data_ext==""){
-														$is_continue_ext = false;
-													}
+												$is_continue_ext = true;
+												$get_data_ext = $this->M_library_database->DB_GET_DATA_ALL_RACK();
+												if (empty($get_data_ext) || $get_data_ext == "") {
+													$is_continue_ext = false;
+												}
 													//-----------------------------------------------------------------------------------------------//
-													if($is_continue_ext){
-														foreach($get_data_ext as $data_row_ext){
-															$RK_ID = $data_row_ext->RK_ID;
-															$RK_TYPE = $data_row_ext->RK_TYPE;
-													?>
+												if ($is_continue_ext) {
+													foreach ($get_data_ext as $data_row_ext) {
+														$RK_ID = $data_row_ext->RK_ID;
+														$RK_TYPE = $data_row_ext->RK_TYPE;
+														?>
 													<option value="<?php echo $RK_ID; ?>"><?php echo $RK_ID; ?> : <?php echo $RK_TYPE; ?></option>
 													<?php
-														}
-													}
-													?>
+
+											}
+										}
+										?>
 												</select>
 											</div>
 										</div>
@@ -475,21 +480,22 @@ $SESSION_GRANT = $this->session->userdata("session_mursmedic_grant");
 												<select class="chosen-select form-control" id="ss_idx" name="ss_idx" data-placeholder="Please Choose">
 													<option value="">Please Choose</option>
 													<?php
-													$is_continue_ext = true;
-													$get_data_ext = $this->M_library_database->DB_GET_DATA_ALL_PRODUCT_CATEGORY();
-													if(empty($get_data_ext)||$get_data_ext==""){
-														$is_continue_ext = false;
-													}
+												$is_continue_ext = true;
+												$get_data_ext = $this->M_library_database->DB_GET_DATA_ALL_PRODUCT_CATEGORY();
+												if (empty($get_data_ext) || $get_data_ext == "") {
+													$is_continue_ext = false;
+												}
 													//-----------------------------------------------------------------------------------------------//
-													if($is_continue_ext){
-														foreach($get_data_ext as $data_row_ext){
-															$PTCY_ID = $data_row_ext->PTCY_ID;
-													?>
+												if ($is_continue_ext) {
+													foreach ($get_data_ext as $data_row_ext) {
+														$PTCY_ID = $data_row_ext->PTCY_ID;
+														?>
 													<option value="<?php echo $PTCY_ID; ?>"><?php echo $PTCY_ID; ?></option>
 													<?php
-														}
-													}
-													?>
+
+											}
+										}
+										?>
 												</select>
 											</div>
 										</div>
@@ -545,76 +551,82 @@ $SESSION_GRANT = $this->session->userdata("session_mursmedic_grant");
 													<tbody>
 														
 														<?php
-														$is_continue = true;
+													$is_continue = true;
 														//-----------------------------------------------------------------------------------------------//
-														if(isset($_POST['btn_search'])){
-															$ss_id = trim($this->input->post('ss_id'));
-														}else{
+													if (isset($_POST['btn_search'])) {
+														$ss_id = trim($this->input->post('ss_id'));
+													} else {
+														$is_continue = false;
+
+													}
+														//-----------------------------------------------------------------------------------------------//
+													if ($is_continue) {
+														$get_data = $this->M_library_database->DB_GET_DATA_SEARCH_RACK_STOCK($ss_id);
+														if (empty($get_data) || $get_data == "") {
 															$is_continue = false;
 														}
+													}
+												
 														//-----------------------------------------------------------------------------------------------//
-														if($is_continue){
-															$get_data = $this->M_library_database->DB_GET_DATA_SEARCH_RACK_STOCK($ss_id);
-															if(empty($get_data)||$get_data==""){
+													if ($is_continue) {
+														$index = 1;
+														$sum_rack = 0;
+														$sum_stock = 0;
+														foreach ($get_data as $data_row) {
+																//-----------------------------------------------------------------------------------------------//
+															$get_data_detail = $this->M_library_database->DB_GET_DATA_ALL_INBOUND_DETAIL($data_row->RK_ID);
+
+															if (empty($get_data_detail) || $get_data_detail == "") {
 																$is_continue = false;
 															}
-														}
-														//-----------------------------------------------------------------------------------------------//
-														if($is_continue){
-															$index = 1;
-															$sum_rack = 0;
-															$sum_stock = 0;
-															foreach($get_data as $data_row){
 																//-----------------------------------------------------------------------------------------------//
-																$get_data_detail = $this->M_library_database->DB_GET_DATA_SEARCH_DETAIL_RACK_STOCK($data_row->RK_ID);
-																if(empty($get_data_detail)||$get_data_detail==""){
-																	$is_continue = false;
-																}
-																//-----------------------------------------------------------------------------------------------//
-																if($is_continue){
-																	foreach($get_data_detail as $data_row_detail){
-																		if($data_row_detail->RK_ID!=null){
-																			if($index==1){
-																				$sum_rack+=1;
-																			}
-														?>
+															if ($is_continue) {
+																foreach ($get_data_detail as $data_row_detail) {
+																	if ($data_row_detail->RK_ID != null) {
+																		if ($index == 1) {
+																			$sum_rack += 1;
+																		}
+																		?>
 														<!-- Table Row -->
-														<?php if($data_row_detail->STOCK == 0){ ?>
+														<?php if ($data_row_detail->PTIDDL_QTY_GOOD == 0) { ?>
 														<tr class="danger">
-														<?php }else{ ?>
+														<?php 
+												} else { ?>
 														<tr>
-														<?php } ?>
+														<?php 
+												} ?>
 															<td><?php echo $index; ?></td>
 															<td><?php echo $data_row_detail->RK_ID; ?></td>
 															<td><?php echo $data_row_detail->PT_ID; ?></td>
 															<td><?php echo $data_row_detail->PT_NAME; ?></td>
-															<td><?php echo $data_row_detail->STOCK; ?></td>
+															<td><?php echo $data_row_detail->PTIDDL_QTY_GOOD; ?></td>
 															<td><?php echo $data_row_detail->PT_UNIT; ?></td>
 														</tr>
 														<!-- Table Row -->
 														<?php
-																			$index++;
-																			$sum_stock+=($data_row_detail->STOCK);
-																		}
-																	}
-																}
-															}
+													$index++;
+													$sum_stock += ($data_row_detail->PTIDDL_QTY_GOOD);
+												}
+											}
+										}
+									}
+
 														//SUM
-														?>
+									?>
 														<tr>
 															<td colspan="5">Sum Rack</td>
-															<td><?php echo ($index-1); ?></td>
+															<td><?php echo ($index - 1); ?></td>
 														<tr>
 														<tr>
 															<td colspan="5">Sum Stock</td>
 															<td><?php echo $sum_stock; ?></td>
 														<tr>
 														<?php
-															if($sum_stock==0){
-																$is_continue = false;
-															}
-														}
-														?>
+													if ($sum_stock == 0) {
+														$is_continue = false;
+													}
+												}
+												?>
 														
 													</tbody>
 												</table>
@@ -630,7 +642,7 @@ $SESSION_GRANT = $this->session->userdata("session_mursmedic_grant");
 							<div class="hr hr-18 dotted hr-single"></div>
 							
 							<!-- Download -->
-							<?php if($is_continue){ ?>
+							<?php if ($is_continue) { ?>
 							<div class="row">
 								<div class="col-xs-12">
 									<p>
@@ -643,7 +655,8 @@ $SESSION_GRANT = $this->session->userdata("session_mursmedic_grant");
 									</p>
 								</div>
 							</div>
-							<?php } ?>
+							<?php 
+					} ?>
 							<!-- Download -->
 							
 							<!-- PAGE CONTENT ENDS -->

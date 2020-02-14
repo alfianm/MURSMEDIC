@@ -88,6 +88,8 @@ $route['o_delivery_note_status'] = 'C_o_delivery_note_status';
 
 $route['r_stock_rack'] = 'C_r_stock_rack';
 $route['r_stock_product'] = 'C_r_stock_product';
+$route['r_stock_product_sample'] = 'C_r_stock_product_sample';
+$route['r_stock_product_return'] = 'C_r_stock_product_return';
 $route['r_inbound'] = 'C_r_inbound';
 $route['r_outbound'] = 'C_r_outbound';
 // KARANTINA
@@ -95,4 +97,5 @@ $route['q_data'] = 'C_q_data';
 $route['q_sample'] = 'C_q_sample';
 $route['q_return'] = 'C_q_return';
 $route['i_input_data_quarantine'] = 'C_i_input_data_quarantine';
+$route['i_inbound'] = 'C_i_inbound';
 //-----------------------------------------------------------------------------------------------//

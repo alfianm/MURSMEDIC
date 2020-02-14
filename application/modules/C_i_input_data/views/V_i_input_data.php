@@ -353,6 +353,20 @@ if (empty($get_data_product) || $get_data_product == "") {
 								</a>
 								<b class="arrow"></b>
 							</li>
+							<li class="">
+								<a href="<?php echo site_url('q_sample'); ?>">
+								<i class="menu-icon fa fa-book"></i>
+								Sample
+								</a>
+								<b class="arrow"></b>
+							</li>
+							<li class="">
+								<a href="<?php echo site_url('q_return'); ?>">
+								<i class="menu-icon fa fa-book"></i>
+								Return
+								</a>
+								<b class="arrow"></b>
+							</li>
 						</ul>
 					</li>
 				</ul>
@@ -782,7 +796,7 @@ if (empty($get_data_product) || $get_data_product == "") {
 		
 		var array = selection.split("[]");
 		
-		//$(pointer).closest("tr").find(".si_product_id").val(array[0]);
+		// $(pointer).closest("tr").find(".si_product_id").val(array[0]);
 		$(pointer).closest("tr").find(".si_product_name").val(array[1]);
 		$(pointer).closest("tr").find(".si_product_unit").val(array[2]);
 		//$(pointer).closest("tr").find(".si_product_unit_max").val(array[3]);

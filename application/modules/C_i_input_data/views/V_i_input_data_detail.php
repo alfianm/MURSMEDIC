@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 //-----------------------------------------------------------------------------------------------//
 $SESSION_ID = $this->session->userdata("session_mursmedic_id");
 $SESSION_NAME = $this->session->userdata("session_mursmedic_name");
@@ -12,8 +12,8 @@ $si_id = trim($this->input->post('si_id'));
 $si_date_receive = trim($this->input->post('si_date_receive'));
 
 $si_supplier_id = trim($this->input->post('si_supplier_id'));
-$get_data_supplier = $this->M_library_database->DB_GET_DATA_SEARCH_SUPPLIER($si_supplier_id,"");
-foreach($get_data_supplier as $data_row_supplier){
+$get_data_supplier = $this->M_library_database->DB_GET_DATA_SEARCH_SUPPLIER($si_supplier_id, "");
+foreach ($get_data_supplier as $data_row_supplier) {
 	$si_supplier_name = $data_row_supplier->SR_NAME;
 	$si_supplier_phone = $data_row_supplier->SR_PHONE;
 	$si_supplier_email = $data_row_supplier->SR_EMAIL;
@@ -27,8 +27,8 @@ $si_pib_no = trim($this->input->post('si_pib_no'));
 $si_invoice_no = trim($this->input->post('si_invoice_no'));
 
 $si_forwarder_id = trim($this->input->post('si_forwarder_id'));
-$get_data_forwarder = $this->M_library_database->DB_GET_DATA_SEARCH_FORWARDER($si_forwarder_id,"");
-foreach($get_data_forwarder as $data_row_forwarder){
+$get_data_forwarder = $this->M_library_database->DB_GET_DATA_SEARCH_FORWARDER($si_forwarder_id, "");
+foreach ($get_data_forwarder as $data_row_forwarder) {
 	$si_forwarder_name = $data_row_forwarder->FR_NAME;
 	$si_forwarder_phone = $data_row_forwarder->FR_PHONE;
 	$si_forwarder_email = $data_row_forwarder->FR_EMAIL;
@@ -47,7 +47,7 @@ foreach($get_data_forwarder as $data_row_forwarder){
 	<title><?php echo $this->M_library_module->WEB_TITLE; ?></title>
 	<meta name="description" content="RL" />
 	<meta name="author" content="RL" />
-	<link rel="icon" href="<?php echo base_url('template/rion/'.$this->M_library_module->WEB_ICON); ?>" />
+	<link rel="icon" href="<?php echo base_url('template/rion/' . $this->M_library_module->WEB_ICON); ?>" />
 
 	<!-- CSS / JAVA SCRIPT / BOOTSTRAP / ETC -->
 	<!-- bootstrap & fontawesome -->
@@ -363,6 +363,20 @@ foreach($get_data_forwarder as $data_row_forwarder){
 									</a>
 									<b class="arrow"></b>
 								</li>
+								<li class="">
+									<a href="<?php echo site_url('q_sample'); ?>">
+									<i class="menu-icon fa fa-book"></i>
+									Sample
+									</a>
+									<b class="arrow"></b>
+								</li>
+								<li class="">
+									<a href="<?php echo site_url('q_return'); ?>">
+									<i class="menu-icon fa fa-book"></i>
+									Return
+									</a>
+									<b class="arrow"></b>
+								</li>
 							</ul>
 						</li>
 					</ul>
@@ -488,7 +502,7 @@ foreach($get_data_forwarder as $data_row_forwarder){
 										<div class="col-xs-12 col-sm-4">
 											Tgl Terima : <?php echo $si_date_receive; ?>
 											<br />
-											Shipper : <?php echo "(".$si_supplier_id.")"." ".$si_supplier_name; ?>
+											Shipper : <?php echo "(" . $si_supplier_id . ")" . " " . $si_supplier_name; ?>
 											<br />
 											PO No : <?php echo $si_po_no; ?>
 											<br />
@@ -499,7 +513,7 @@ foreach($get_data_forwarder as $data_row_forwarder){
 										<div class="col-xs-12 col-sm-4">
 											Invoice No : <?php echo $si_invoice_no; ?>
 											<br />
-											Forwarder : <?php echo "(".$si_forwarder_id.")"." ".$si_forwarder_name; ?>
+											Forwarder : <?php echo "(" . $si_forwarder_id . ")" . " " . $si_forwarder_name; ?>
 											<br />
 											Container No : ..............................
 											<br />
@@ -538,29 +552,29 @@ foreach($get_data_forwarder as $data_row_forwarder){
 																<?php
 																//SAMPLE:PT_ID[]PT_NAME[]PT_UNIT[]PT_UNIT_MAX[]PT_TYPE[]PT_IS_MANUFDATE
 																//SAMPLE VALUE:ID PRODUCT A[]PRODUCT A[]BOX[]1[]SN[]NO
-																$array_si_product_id = $_POST['si_product_id'];
-																$array_si_product_qty = $_POST['si_product_qty'];
-																$array_si_product_expired = $_POST['si_product_expired'];
-																
-																$array_si_product_id_length = count($array_si_product_id);
-																$index = 1;
-																for($x = 0; $x < $array_si_product_id_length; $x++) {
-																	$array_product = explode("[]", $array_si_product_id[$x]);
-																	$PT_ID = $array_product[0];//ID PRODUCT A
-																	$PT_NAME = $array_product[1];//PRODUCT A
-																	$PT_UNIT = $array_product[2];//BOX
-																	$PT_UNIT_MAX = $array_product[3];//1
-																	$PT_TYPE = $array_product[4];//SN
-																	$PT_IS_MANUFDATE = $array_product[5];//NO
-																	$SR_ID = $array_product[6];//ID SUPPLIER A
-																	$SR_NAME = $array_product[7];//SUPPLIER A
-																	
-																	$QTY = $array_si_product_qty[$x];
-																	$EXPIRED = $array_si_product_expired[$x];
-																	
-																	if($PT_TYPE=="SN"){
-																		for($y = 0; $y < $QTY; $y++) {
-																?>
+															$array_si_product_id = $_POST['si_product_id'];
+															$array_si_product_qty = $_POST['si_product_qty'];
+															$array_si_product_expired = $_POST['si_product_expired'];
+
+															$array_si_product_id_length = count($array_si_product_id);
+															$index = 1;
+															for ($x = 0; $x < $array_si_product_id_length; $x++) {
+																$array_product = explode("[]", $array_si_product_id[$x]);
+																$PT_ID = $array_product[0];//ID PRODUCT A
+																$PT_NAME = $array_product[1];//PRODUCT A
+																$PT_UNIT = $array_product[2];//BOX
+																$PT_UNIT_MAX = $array_product[3];//1
+																$PT_TYPE = $array_product[4];//SN
+																$PT_IS_MANUFDATE = $array_product[5];//NO
+																$SR_ID = $array_product[6];//ID SUPPLIER A
+																$SR_NAME = $array_product[7];//SUPPLIER A
+
+																$QTY = $array_si_product_qty[$x];
+																$EXPIRED = $array_si_product_expired[$x];
+
+																if ($PT_TYPE == "SN") {
+																	for ($y = 0; $y < $QTY; $y++) {
+																		?>
 																<!------------------------------------------------------------------------------------------------->
 																<tr>
 																	<td><?php echo $index; ?></td>
@@ -569,24 +583,26 @@ foreach($get_data_forwarder as $data_row_forwarder){
 																	<td><input type="text" id="si_product_detail_unit[]" name="si_product_detail_unit[]" class="form-control" value="<?php echo $PT_UNIT; ?>" required="required" readonly="readonly"/></td>
 																	<td><input type="text" id="si_product_detail_no[]" name="si_product_detail_no[]" placeholder="SN" class="form-control" maxlength="150" autocomplete="off" onkeyup="auto_caps(this)" required="required"/></td>
 																<?php
-																			if($PT_IS_MANUFDATE=="NO"){
+															if ($PT_IS_MANUFDATE == "NO") {
 																?>
 																	<td><input type="text" id="si_product_detail_manufdate[]" name="si_product_detail_manufdate[]" class="form-control" value="" readonly="readonly"/></td>
 																<?php
-																			}else{
-																?>
+
+														} else {
+															?>
 																	<td><input type="text" id="si_product_detail_manufdate[]" name="si_product_detail_manufdate[]" class="form-control" maxlength="150" autocomplete="off" onkeyup="auto_caps(this)" required="required"/></td>
 																<?php
-																			}
-																?>
+
+														}
+														?>
 																	<td><input type="text" id="si_product_detail_qty[]" name="si_product_detail_qty[]" class="form-control" value="1" required="required" readonly="readonly"/></td>
 																	<td><input type="text" id="si_product_detail_expired[]" name="si_product_detail_expired[]" class="form-control" value="<?php echo $EXPIRED; ?>" readonly="readonly"/></td>
 																</tr>
 																<?php
-																			$index++;
-																		}
-																	}else if($PT_TYPE=="BATCH"){
-																?>
+															$index++;
+														}
+													} else if ($PT_TYPE == "BATCH") {
+														?>
 																<tr>
 																	<td><?php echo $index; ?></td>
 																	<td><input type="text" id="si_product_detail_id[]" name="si_product_detail_id[]" class="form-control" value="<?php echo $PT_ID; ?>" required="required" readonly="readonly"/></td>
@@ -594,23 +610,25 @@ foreach($get_data_forwarder as $data_row_forwarder){
 																	<td><input type="text" id="si_product_detail_unit[]" name="si_product_detail_unit[]" class="form-control" value="<?php echo $PT_UNIT; ?>" required="required" readonly="readonly"/></td>
 																	<td><input type="text" id="si_product_detail_no[]" name="si_product_detail_no[]" placeholder="BATCH" class="form-control" maxlength="150" autocomplete="off" onkeyup="auto_caps(this)" required="required"/></td>
 																<?php
-																		if($PT_IS_MANUFDATE=="NO"){
+															if ($PT_IS_MANUFDATE == "NO") {
 																?>
 																	<td><input type="text" id="si_product_detail_manufdate[]" name="si_product_detail_manufdate[]" class="form-control" value="" readonly="readonly"/></td>
 																<?php
-																		}else{
-																?>
+
+														} else {
+															?>
 																	<td><input type="text" id="si_product_detail_manufdate[]" name="si_product_detail_manufdate[]" class="form-control" maxlength="150" autocomplete="off" onkeyup="auto_caps(this)" required="required"/></td>
 																<?php
-																		}
-																?>
+
+														}
+														?>
 																	<td><input type="text" id="si_product_detail_qty[]" name="si_product_detail_qty[]" class="form-control" value="<?php echo $QTY; ?>" required="required" readonly="readonly"/></td>
 																	<td><input type="text" id="si_product_detail_expired[]" name="si_product_detail_expired[]" class="form-control" value="<?php echo $EXPIRED; ?>" readonly="readonly"/></td>
 																</tr>
 																<?php
-																		$index++;
-																	}else{
-																?>
+															$index++;
+														} else {
+															?>
 																<tr>
 																	<td><?php echo $index; ?></td>
 																	<td><input type="text" id="si_product_detail_id[]" name="si_product_detail_id[]" class="form-control" value="<?php echo $PT_ID; ?>" required="required" readonly="readonly"/></td>
@@ -618,24 +636,26 @@ foreach($get_data_forwarder as $data_row_forwarder){
 																	<td><input type="text" id="si_product_detail_unit[]" name="si_product_detail_unit[]" class="form-control" value="<?php echo $PT_UNIT; ?>" required="required" readonly="readonly"/></td>
 																	<td><input type="text" id="si_product_detail_no[]" name="si_product_detail_no[]" placeholder="NONE" class="form-control" maxlength="150" autocomplete="off" onkeyup="auto_caps(this)" readonly="readonly"/></td>
 																<?php
-																		if($PT_IS_MANUFDATE=="NO"){
+															if ($PT_IS_MANUFDATE == "NO") {
 																?>
 																	<td><input type="text" id="si_product_detail_manufdate[]" name="si_product_detail_manufdate[]" class="form-control" value="" readonly="readonly"/></td>
 																<?php
-																		}else{
-																?>
+
+														} else {
+															?>
 																	<td><input type="text" id="si_product_detail_manufdate[]" name="si_product_detail_manufdate[]" class="form-control" maxlength="150" autocomplete="off" onkeyup="auto_caps(this)" required="required"/></td>
 																<?php
-																		}
-																?>
+
+														}
+														?>
 																	<td><input type="text" id="si_product_detail_qty[]" name="si_product_detail_qty[]" class="form-control" value="<?php echo $QTY; ?>" required="required" readonly="readonly"/></td>
 																	<td><input type="text" id="si_product_detail_expired[]" name="si_product_detail_expired[]" class="form-control" value="<?php echo $EXPIRED; ?>" readonly="readonly"/></td>
 																</tr>
 																<?php
-																		$index++;
-																	}
-																}
-																?>
+															$index++;
+														}
+													}
+													?>
 																<!------------------------------------------------------------------------------------------------->
 																
 															</tbody>

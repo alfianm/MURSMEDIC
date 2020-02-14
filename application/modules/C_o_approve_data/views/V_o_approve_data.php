@@ -359,6 +359,20 @@ if(empty($get_data_approve)||$get_data_approve==""){
 									</a>
 									<b class="arrow"></b>
 								</li>
+								<li class="">
+									<a href="<?php echo site_url('q_sample'); ?>">
+									<i class="menu-icon fa fa-book"></i>
+									Sample
+									</a>
+									<b class="arrow"></b>
+								</li>
+								<li class="">
+									<a href="<?php echo site_url('q_return'); ?>">
+									<i class="menu-icon fa fa-book"></i>
+									Return
+									</a>
+									<b class="arrow"></b>
+								</li>
 							</ul>
 						</li>
 					</ul>
@@ -739,6 +753,7 @@ if(empty($get_data_approve)||$get_data_approve==""){
 																			$index = 1;
 																			foreach($get_data_product_detail as $data_row_product_detail){
 																				$si_detail_id = $data_row_product_detail->PTODDL_ID;
+																				$si_detail_id_inbound = $data_row_product_detail->PTIDDL_ID;
 																				
 																				$si_product_detail_id = $data_row_product_detail->PT_ID;
 																				$si_product_detail_name = $data_row_product_detail->PT_NAME;
@@ -748,13 +763,16 @@ if(empty($get_data_approve)||$get_data_approve==""){
 																				$si_product_detail_manufdate = $data_row_product_detail->PTODDL_MANUFDATE;
 																				$si_product_detail_expired = $data_row_product_detail->PTODDL_EXPIRED;
 																				$si_product_detail_qty = $data_row_product_detail->PTODDL_QTY;
+																				$si_product_detail_stock = $data_row_product_detail->PTODDL_STOCK_INBOUND;
 																				$si_product_detail_unit = $data_row_product_detail->PT_UNIT;
 																		?>
 																		<tr id='addr<?php echo $index_row; ?>'>
 																			<input type="hidden" id="si_detail_id[]" name="si_detail_id[]" class="form-control" value="<?php echo $si_detail_id; ?>" required="required" readonly="readonly"/>
+																			<input type="hidden" id="si_detail_id_inbound[]" name="si_detail_id_inbound[]" class="form-control" value="<?php echo $si_detail_id_inbound; ?>" required="required" readonly="readonly"/>
 																			<input type="hidden" id="si_product_detail_id[]" name="si_product_detail_id[]" class="form-control" value="<?php echo $si_product_detail_id; ?>" required="required" readonly="readonly"/>
 																			<input type="hidden" id="si_product_no[]" name="si_product_no[]" class="form-control" value="<?php echo $si_product_detail_no; ?>" maxlength="150" autocomplete="off" onkeyup="auto_caps(this)" required="required"/>
 																			<input type="hidden" id="si_product_qty_total[]" name="si_product_qty_total[]" class="form-control" value="<?php echo $si_product_detail_qty; ?>" required="required" readonly="readonly"/>
+																			<input type="hidden" id="si_product_qty_stock[]" name="si_product_qty_stock[]" class="form-control" value="<?php echo $si_product_detail_stock; ?>" required="required" readonly="readonly"/>
 																			<input type="hidden" id="si_product_qty_good[]" name="si_product_qty_good[]" class="form-control" value="<?php echo $si_product_detail_qty; ?>" maxlength="20" autocomplete="off" onkeydown="numbers_only(event)" required="required"/>
 																			<input type="hidden" id="si_product_qty_bad[]" name="si_product_qty_bad[]" class="form-control" value="0" maxlength="20" autocomplete="off" onkeydown="numbers_only(event)" required="required"/>
 																		

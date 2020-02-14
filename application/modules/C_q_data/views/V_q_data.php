@@ -660,7 +660,7 @@ if (empty($get_data_product) || $get_data_product == "") {
 												<div class="row">
 														<input type="hidden" id="repack_id" name="repack_id" class="form-control repack_id" required="required" readonly="readonly"/>
 														<input type="hidden" id="repack_pt_id" name="repack_pt_id" class="form-control repack_pt_id" required="required" readonly="readonly"/>
-														<input type="text" id="repack_ptid_id" name="repack_ptid_id" class="form-control repack_ptid_id" required="required" readonly="readonly"/>
+														<input type="hidden" id="repack_ptid_id" name="repack_ptid_id" class="form-control repack_ptid_id" required="required" readonly="readonly"/>
 														<input type="hidden" id="repack_total" name="repack_total" class="form-control repack_total" required="required" onkeyup="hitung()" readonly/>
 														
 													<div class="col-xs-12">
