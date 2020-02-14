@@ -14,6 +14,8 @@ class C_o_delivery_note_status extends CI_Controller{
 		if($this->session->userdata('session_mursmedic_status') != "LOGIN"){
 			redirect(site_url("index"));
 		}
+
+
     }
 	//-----------------------------------------------------------------------------------------------//
 	//-----------------------------------------------------------------------------------------------//
@@ -80,24 +82,38 @@ class C_o_delivery_note_status extends CI_Controller{
 	//-----------------------------------------------------------------------------------------------//
 	//-----------------------------------------------------------------------------------------------//
 	function update(){
-        $config['upload_path']="./template/backend/assets/file";
-        $config['allowed_types']='pdf|pptx|doc|docx|ppt';
-        $config['encrypt_name'] = TRUE;
-         
-        $this->load->library('upload',$config);
-        if($this->upload->do_upload("file")){
-            $data = array('upload_data' => $this->upload->data());
- 
-            $su_id_lastest= $this->input->post('su_id_lastest');
-            $su_id= $this->input->post('su_id');
-            $diterima= $this->input->post('diterima');
-            $kembali= $this->input->post('kembali');
-            $file= $data['upload_data']['file_name']; 
-             
-            $result= $this->M_library_database->simpan_upload($su_id_lastest,$su_id,$diterima,$kembali,$file);
-            echo json_decode($result);
-        }
- 
+		$this->load->library('upload');
+		$config['upload_path'] = './template/backend/assets/file';
+	    $config['allowed_types'] = 'pdf|pptx|doc|docx|ppt';
+	    $config['encrypt_name'] = false;
+
+	    $this->upload->initialize($config);
+	    if(!empty($_FILES['upload_dn']['name'])){
+	        if ($this->upload->do_upload('upload_dn')){
+	    		$img = $this->upload->data();
+
+	            $file = $img['file_name'];
+	            $su_id_lastest= $this->input->post('su_id_lastest');
+	            $su_id= $this->input->post('su_id');
+	            $diterima= $this->input->post('diterima');
+	            $kembali= $this->input->post('kembali');
+
+	             $data = array(
+	                'PTOD_DO_NO' => $su_id,
+	                'UPLOAD_DN' => $file,
+	                'TGL_DITERIMA' => $diterima,
+	                'TGL_KEMBALI' => $kembali
+	            );  
+
+	            $this->db->where('PTOD_DO_NO', $su_id_lastest);
+        		$this->db->update('tb_product_outbound',$data);
+        		redirect('C_o_delivery_note_status','refresh');
+	        }else{
+	        	echo "gagal";
+	        }
+	    }else{
+	    	echo "gagal2";
+	    } 
      }
 	//-----------------------------------------------------------------------------------------------//
 	//-----------------------------------------------------------------------------------------------//

@@ -2144,7 +2144,9 @@ class M_library_database extends CI_Model
 			tb_product_outbound.PTOD_STATUS, 
 			tb_product_outbound.PTOD_APP_BY, 
 			tb_product_outbound.PTOD_QTY_TOTAL,
-			tb_product_outbound.UPLOAD_DN 
+			tb_product_outbound.UPLOAD_DN,
+			tb_product_outbound.TGL_DITERIMA,
+			tb_product_outbound.TGL_KEMBALI
 			FROM 
 			tb_product_outbound 
 			INNER JOIN tb_distributor ON tb_product_outbound.DR_ID = tb_distributor.DR_ID 
@@ -3577,17 +3579,6 @@ class M_library_database extends CI_Model
 		return $result;
 	}
 
-	 function simpan_upload($su_id_lastest,$su_id,$diterima,$kembali,$file){
-        $data = array(
-                'PTOD_DO_NO' => $su_id,
-                'UPLOAD_DN' => $file,
-                'TGL_DITERIMA' => $diterima,
-                'TGL_KEMBALI' => $kembali
-            );  
-        $this->db->where('PTOD_DO_NO', $su_id_lastest);
-        $result= $this->db->update('tb_product_outbound',$data);
-        return $result;
-    }
 
 
 	//-----------------------------------------------------------------------------------------------//

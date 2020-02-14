@@ -499,26 +499,45 @@ $SESSION_GRANT = $this->session->userdata("session_mursmedic_grant");
 														<td><?php echo $data_row->PTOD_DO_NO; ?></td>
 														<td><?php echo $data_row->PTOD_TGL_KIRIM; ?></td>
 														<td>
-															<div class="input-group">
-																<input class="form-control date-picker" id="si_date_receive" name="si_date_receive" type="text" data-date-format="yyyy-mm-dd" value="<?php echo date('Y-m-d'); ?>" required="required"/>
+															<?php if ($data_row->TGL_DITERIMA == "" || $data_row->TGL_DITERIMA == NULL): ?>
+																<div class="input-group">
+																<input class="form-control date-picker" id="si_date_receive" name="si_date_receive" type="text" disabled  value="" required="required"/>
 																<span class="input-group-addon">
 																	<i class="fa fa-calendar bigger-110"></i>
 																</span>
 															</div>
+															<?php else: ?>
+																<div class="input-group">
+																<input class="form-control date-picker" id="si_date_receive" name="si_date_receive" type="text" value="<?php echo $data_row->TGL_DITERIMA; ?>" disabled required="required"/>
+																<span class="input-group-addon">
+																	<i class="fa fa-calendar bigger-110"></i>
+																</span>
+															</div>
+															<?php endif ?>
+															
 														</td>
 														<td>
+															<?php if ($data_row->TGL_KEMBALI == "" || $data_row->TGL_KEMBALI == NULL): ?>
 															<div class="input-group">
-																<input class="form-control date-picker" id="si_date_back" name="si_date_back" type="text" data-date-format="yyyy-mm-dd" value="<?php echo date('Y-m-d'); ?>" required="required"/>
+																<input class="form-control date-picker" id="si_date_back" name="si_date_back" type="text" value="" required="required" disabled />
 																<span class="input-group-addon">
 																	<i class="fa fa-calendar bigger-110"></i>
 																</span>
 															</div>
+															<?php else: ?>
+															<div class="input-group">
+																<input class="form-control date-picker" id="si_date_back" name="si_date_back" type="text" value="<?php echo $data_row->TGL_KEMBALI; ?>" disabled required="required"/>
+																<span class="input-group-addon">
+																	<i class="fa fa-calendar bigger-110"></i>
+																</span>
+															</div>
+															<?php endif ?>
 														</td>
 														<td>
 															<?php if ($data_row->UPLOAD_DN == NULL): ?>
 																<?php echo "File tidak ada." ?>
 															<?php else: ?>
-																<?php echo '<a href="'.$data_row->UPLOAD_DN.'" title="">'.$data_row->UPLOAD_DN.'</a>' ?>
+																<?php echo '<a href="'.base_url('template/backend/assets/file/'.$data_row->UPLOAD_DN).'" target="_blank">'.$data_row->UPLOAD_DN.'</a>' ?>
 															<?php endif ?>
 														</td>
 														
@@ -601,8 +620,7 @@ $SESSION_GRANT = $this->session->userdata("session_mursmedic_grant");
 	<div id="modal-form-update" class="modal" tabindex="-1" role="dialog" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
-				<form class="form-horizontal" id="submit">
-				
+				<form class="form-horizontal" method="post" action="<?= base_url('C_o_delivery_note_status/update') ?>" enctype="multipart/form-data">
 					<div class="modal-header">
 						<h4 class="blue bigger">Form Update Data</h4>
 					</div>
@@ -735,26 +753,7 @@ $SESSION_GRANT = $this->session->userdata("session_mursmedic_grant");
 	<!-- inline scripts related to this page -->
 	<script type="text/javascript">
 
-		$(document).ready(function(){
- 
-        $('#submit').submit(function(e){
-	            e.preventDefault(); 
-	                 $.ajax({
-	                     url:'<?php echo base_url();?>C_o_delivery_note_status/update',
-	                     type:"post",
-	                     data:new FormData(this),
-	                     processData:false,
-	                     contentType:false,
-	                     cache:false,
-	                     async:false,
-	                      success: function(data){
-	                          alert("Upload Image Berhasil.");
-	                   }
-	                 });
-	            });
-	         
-	 
-	    });
+		
 		//-----------------------------------------------------------------------------------------------//
 		function web_reload() {
 			location.href=location.href
